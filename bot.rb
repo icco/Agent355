@@ -7,6 +7,7 @@ require 'isaac'
 #
 # [i]: https://github.com/ichverstehe/isaac
 
+settings = {}
 
 # This is here for now, until the regex is nailed down
 def mature
@@ -28,6 +29,8 @@ def mature
       }
    }
 
+   spaced_words << 'f+\W*[a@]+\W*g'
+
    rex = spaced_words.join('|')
 
    return Regexp.new("(#{rex})",  Regexp::EXTENDED|Regexp::IGNORECASE)
@@ -43,11 +46,13 @@ configure do |c|
       'port' => 6667,
    }
 
-   File.open(File.expand_path('./config.yml'), 'a+') {|yf|
+   File.open(File.expand_path('./config.yml'), 'r') {|yf|
       new_settings = YAML::load( yf )
-      new_settings.each_pair {|key, val|
-         settings[key] = val
-      }
+      if new_settings
+         new_settings.each_pair {|key, val|
+            settings[key] = val
+         }
+      end
    }
 
    c.nick = settings['nick'] 

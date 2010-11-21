@@ -7,12 +7,6 @@ require 'isaac'
 #
 # [i]: https://github.com/ichverstehe/isaac
 
-# This should eventualy be pulled from YAML.
-settings = {
-   'realname' => 'Nat Welch',
-   'nick' => "Agent355",
-   'server' => 'irc.freenode.net',
-}
 
 # This is here for now, until the regex is nailed down
 def mature
@@ -40,16 +34,36 @@ def mature
 end
 
 configure do |c|
+   # defaults
+   settings = {
+      'realname' => 'Nat Welch',
+      'nick' => "Agent355",
+      'ns_pw' => "",
+      'server' => 'irc.freenode.net',
+      'port' => 6667,
+   }
+
+   File.open(File.expand_path('./config.yml'), 'a+') {|yf|
+      new_settings = YAML::load( yf )
+      new_settings.each_pair {|key, val|
+         settings[key] = val
+      }
+   }
+
    c.nick = settings['nick'] 
    c.server = settings['server']
-   c.port = 6667
+   c.port = settings['port']
    c.realname = settings['realname']
    c.verbose = true
    c.version = 'Agent 355 v0.42'
+
 end
 
 on :connect do
-   msg 'NickServ', "IDENTIFY #{settings['nick']} #{settings['ns_pw']}"
+   if settings['ns_pw']
+      msg 'NickServ', "IDENTIFY #{settings['nick']} #{settings['ns_pw']}"
+   end
+
    join "#icco"
 end
 
@@ -60,6 +74,7 @@ end
 on :channel, mature do
    action = "kicked"
    message = "Hi #{nick}. You've been #{action} because the following matched my mature language regex: #{match.inspect}."
+   kick_msg = "That language is not ok in #cplug."
    msg channel, message
 end
 
@@ -67,11 +82,6 @@ on :channel, /^\.mature$/ do
    msg nick, "Mature Regex: #{mature.inspect.tr("\n", "")}"
 end
 
-# returns a quote. Should probably pull from crackquotes, but that could cause a self-ban
-on :channel, /\.quote/ do
-   msg channel, "#{nick} requested a quote..."
-end
-
 on :channel, /\.source/ do
-   msg channel, " -- My source is at https://github.com/icco/Agent355."
+   msg channel, "My source is at http://github.com/icco/Agent355."
 end

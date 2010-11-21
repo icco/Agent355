@@ -7,20 +7,18 @@ require 'isaac'
 #
 # [i]: https://github.com/ichverstehe/isaac
 
-# This should eventualy be pulled from YAML.
-settings = {
-   'realname' => 'Nat Welch',
-   'nick' => "Agent355",
-   'server' => 'irc.freenode.net',
-}
+settings = {}
 
 # This is here for now, until the regex is nailed down
 def mature
    words = [
       'fag',
-      'nig',
+      'nigger',
+      'niggar',
+      'niggr',
+      'chnk',
       'chink',
-      'gook'
+      'gook',
    ]
 
    spaced_words = words.clone
@@ -31,22 +29,46 @@ def mature
       }
    }
 
+   spaced_words << 'f+\W*[a@]+\W*g'
+
    rex = spaced_words.join('|')
 
    return Regexp.new("(#{rex})",  Regexp::EXTENDED|Regexp::IGNORECASE)
 end
 
 configure do |c|
+   # defaults
+   settings = {
+      'realname' => 'Nat Welch',
+      'nick' => "Agent355",
+      'ns_pw' => "",
+      'server' => 'irc.freenode.net',
+      'port' => 6667,
+   }
+
+   File.open(File.expand_path('./config.yml'), 'r') {|yf|
+      new_settings = YAML::load( yf )
+      if new_settings
+         new_settings.each_pair {|key, val|
+            settings[key] = val
+         }
+      end
+   }
+
    c.nick = settings['nick'] 
    c.server = settings['server']
-   c.port = 6667
+   c.port = settings['port']
    c.realname = settings['realname']
    c.verbose = true
    c.version = 'Agent 355 v0.42'
+
 end
 
 on :connect do
-   msg 'NickServ', "IDENTIFY #{settings['nick']} #{settings['ns_pw']}"
+   if settings['ns_pw']
+      msg 'NickServ', "IDENTIFY #{settings['nick']} #{settings['ns_pw']}"
+   end
+
    join "#icco"
 end
 
@@ -55,18 +77,16 @@ on :private, /^t (.*)/ do
 end
 
 on :channel, mature do
-   msg channel, "This is not okay: #{match.inspect}."
+   action = "kicked"
+   message = "Hi #{nick}. You've been #{action} because the following matched my mature language regex: #{match.inspect}."
+   kick_msg = "That language is not ok in #cplug."
+   msg channel, message
 end
 
 on :channel, /^\.mature$/ do
    msg nick, "Mature Regex: #{mature.inspect.tr("\n", "")}"
 end
 
-# returns a quote. Should probably pull from crackquotes, but that could cause a self-ban
-on :channel, /\.quote/ do
-   msg channel, "#{nick} requested a quote..."
-end
-
 on :channel, /\.source/ do
-   msg channel, " -- My source is at https://github.com/icco/Agent355."
+   msg channel, "My source is at http://github.com/icco/Agent355."
 end

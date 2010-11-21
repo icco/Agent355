@@ -15,22 +15,18 @@ settings = {
 }
 
 # This is here for now, until the regex is nailed down
-mature = /
-      (fuck
-       |fag
-       |fagging
-       |faggot
-       |faggs
-       |fagot
-       |fagots
-       |fags
-       |nigger
-       |niggers
-       |niggar
-       |chink
-       |gook
-      )
-    /xi
+def mature
+   words = [
+      'fag',
+      'nig',
+      'chink',
+      'gook'
+   ]
+
+   rex = words.join('|')
+
+   return Regexp.new("(#{rex})",  Regexp::EXTENDED|Regexp::IGNORECASE)
+end
 
 configure do |c|
    c.nick = settings['nick'] 
@@ -52,6 +48,10 @@ end
 
 on :channel, mature do
    msg channel, "This is not okay: #{match.inspect}."
+end
+
+on :channel, /^\.mature$/ do
+   msg nick, "Mature Regex: #{mature.inspect.tr("\n", "").tr(' ', '')}"
 end
 
 # returns a quote. Should probably pull from crackquotes, but that could cause a self-ban

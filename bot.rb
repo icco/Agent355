@@ -70,10 +70,6 @@ on :connect do
    join settings['channel']
 end
 
-on :private, /^t (.*)/ do
-   msg nick, "You said: #{match.inspect}"
-end
-
 on :channel, mature do
    if !settings['exempt'].include? nick
       action = "kicked"
@@ -88,6 +84,6 @@ on :channel, /^\.mature$/ do
    msg nick, "Mature Regex: #{mature.inspect.tr("\n", "")}"
 end
 
-on :channel, /\.source/ do
+on :channel, /^\.source$/ do
    msg channel, "My source is at http://github.com/icco/Agent355."
 end

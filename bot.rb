@@ -41,6 +41,8 @@ configure do |c|
       'ns_pw' => "",
       'server' => 'irc.freenode.net',
       'port' => 6667,
+      'exempt' => [],
+      'channel' => '#bottest'
    }
 
    File.open(File.expand_path('./config.yml'), 'r') {|yf|
@@ -56,9 +58,8 @@ configure do |c|
    c.server = settings['server']
    c.port = settings['port']
    c.realname = settings['realname']
-   c.verbose = true
+   c.verbose = false
    c.version = 'Agent 355 v0.42'
-
 end
 
 on :connect do
@@ -66,7 +67,7 @@ on :connect do
       msg 'NickServ', "IDENTIFY #{settings['nick']} #{settings['ns_pw']}"
    end
 
-   join "#icco"
+   join settings['channel']
 end
 
 on :private, /^t (.*)/ do
@@ -74,10 +75,13 @@ on :private, /^t (.*)/ do
 end
 
 on :channel, mature do
-   action = "kicked"
-   message = "Hi #{nick}. You've been #{action} because the following matched my mature language regex: #{match.inspect}."
-   kick_msg = "That language is not ok in #cplug."
-   msg channel, message
+   if !settings['exempt'].include? nick
+      action = "kicked"
+      message = "Hi #{nick}. You've been #{action} because the following matched my mature language regex: #{match.inspect}."
+      kick_msg = "That language is not ok in #cplug."
+      #msg channel, message
+      puts "#{nick}: #{action} => #{match.inspect}"
+   end
 end
 
 on :channel, /^\.mature$/ do

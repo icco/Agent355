@@ -23,7 +23,15 @@ def mature
       'gook'
    ]
 
-   rex = words.join('|')
+   spaced_words = words.clone
+   seperators = "-. _"
+   words.each {|w|
+      seperators.each_char {|s|
+         spaced_words << Regexp.escape(w.split('').join(s))
+      }
+   }
+
+   rex = spaced_words.join('|')
 
    return Regexp.new("(#{rex})",  Regexp::EXTENDED|Regexp::IGNORECASE)
 end
@@ -51,7 +59,7 @@ on :channel, mature do
 end
 
 on :channel, /^\.mature$/ do
-   msg nick, "Mature Regex: #{mature.inspect.tr("\n", "").tr(' ', '')}"
+   msg nick, "Mature Regex: #{mature.inspect.tr("\n", "")}"
 end
 
 # returns a quote. Should probably pull from crackquotes, but that could cause a self-ban

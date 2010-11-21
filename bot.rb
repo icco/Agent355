@@ -18,9 +18,12 @@ settings = {
 def mature
    words = [
       'fag',
-      'nig',
+      'nigger',
+      'niggar',
+      'niggr',
+      'chnk',
       'chink',
-      'gook'
+      'gook',
    ]
 
    spaced_words = words.clone
@@ -55,7 +58,9 @@ on :private, /^t (.*)/ do
 end
 
 on :channel, mature do
-   msg channel, "This is not okay: #{match.inspect}."
+   action = "kicked"
+   message = "Hi #{nick}. You've been #{action} because the following matched my mature language regex: #{match.inspect}."
+   msg channel, message
 end
 
 on :channel, /^\.mature$/ do

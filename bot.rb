@@ -14,64 +14,9 @@ settings = {
    'server' => 'irc.freenode.net',
 }
 
-mature = /\b
-      (
-        ass
-       |asses
-       |asshole
-       |assholes
-       |badass
-       |bastard
-       |beastial
-       |beastiality
-       |beastility
-       |bestial
-       |bestiality
-       |bitch
-       |bitcher
-       |bitchers
-       |bitches
-       |bitchin
-       |bitching
-       |blowjob
-       |blowjobs
-       |clit
-       |cock
-       |cocks
-       |cocksuck 
-       |cocksucked 
-       |cocksucker
-       |cocksucking
-       |cocksucks 
-       |cum
-       |cummer
-       |cumming
-       |cums
-       |cumshot
-       |cunilingus
-       |cunillingus
-       |cunnilingus
-       |cunt
-       |cuntlick
-       |cuntlicker
-       |cuntlicking
-       |cunts
-       |cyberfuc
-       |cyberfuck
-       |cyberfucked
-       |cyberfucker
-       |cyberfuckers
-       |cyberfucking
-       |damn
-       |dildo
-       |dildos
-       |dumbshit
-       |ejaculate
-       |ejaculated
-       |ejaculates
-       |ejaculating
-       |ejaculatings
-       |ejaculation
+# This is here for now, until the regex is nailed down
+mature = /
+      (fuck
        |fag
        |fagging
        |faggot
@@ -79,127 +24,13 @@ mature = /\b
        |fagot
        |fagots
        |fags
-       |felatio
-       |fellatio
-       |fingerfuck
-       |fingerfucked
-       |fingerfucker
-       |fingerfuckers
-       |fingerfucking
-       |fingerfucks
-       |fistfuck
-       |fistfucked
-       |fistfucker
-       |fistfuckers
-       |fistfucking
-       |fistfuckings
-       |fistfucks
-       |fuck
-       |fucked
-       |fucker
-       |fuckers
-       |fuckin
-       |fucking
-       |fuckings
-       |fuckme
-       |fucks
-       |fuk
-       |fuks
-       |gangbang
-       |gangbanged
-       |gangbangs
-       |gaysex
-       |goddamn
-       |(?:god.damn)
-       |(?:god.dammit)
-       |hell
-       |horniest
-       |horny
-       |hotsex
-       |jack.off
-       |jerk.off
-       |jism
-       |jiz
-       |jizm
-       |kock
-       |kondum
-       |kondums
-       |kum
-       |kummer
-       |kumming
-       |kums
-       |kunilingus
-       |lust
-       |lusting
-       |mothafuck
-       |mothafucka
-       |mothafuckas
-       |mothafuckaz
-       |mothafucked
-       |mothafucker
-       |mothafuckers
-       |mothafuckin
-       |mothafucking
-       |mothafuckings
-       |mothafucks
-       |motherfuck
-       |motherfucked
-       |motherfucker
-       |motherfuckers
-       |motherfuckin
-       |motherfucking
-       |motherfuckings
-       |motherfucks
        |nigger
        |niggers
-       |orgasim
-       |orgasims
-       |orgasm
-       |orgasms
-       |phonesex
-       |phuk
-       |phuked
-       |phuking
-       |phukked
-       |phukking
-       |phuks
-       |phuq
-       |piss
-       |pissed
-       |pisser
-       |pissers
-       |pisses
-       |pissin
-       |pissing
-       |pissoff
-       |porn
-       |porno
-       |pornography
-       |pornos
-       |prick
-       |pricks
-       |pussies
-       |pussy
-       |pussys
-       |shit
-       |shited
-       |shitfull
-       |shiting
-       |shitings
-       |shits
-       |shitted
-       |shitter
-       |shitters
-       |shitting
-       |shittings
-       |shitty
-       |slut
-       |sluts
-       |smut
-       |spunk
-       |twat
+       |niggar
+       |chink
+       |gook
       )
-    \b/xi
+    /xi
 
 configure do |c|
    c.nick = settings['nick'] 

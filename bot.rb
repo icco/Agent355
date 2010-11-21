@@ -21,17 +21,14 @@ def mature
       'gook',
    ]
 
-   spaced_words = words.clone
-   seperators = "-. _"
+   match_words = words.clone
    words.each {|w|
-      seperators.each_char {|s|
-         spaced_words << Regexp.escape(w.split('').join(s))
-      }
+      match_words << w.split('').join('+[^A-Za-z]*')
    }
 
-   spaced_words << 'f+\W*[a@]+\W*g'
+   match_words << 'f+\W*[a@]+\W*g'
 
-   rex = spaced_words.join('|')
+   rex = match_words.join('|')
 
    return Regexp.new("(#{rex})",  Regexp::EXTENDED|Regexp::IGNORECASE)
 end

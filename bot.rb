@@ -1,5 +1,7 @@
 #!/usr/bin/env ruby
 
+require 'rubygems'
+require 'logger'
 require 'isaac'
 require 'yaml'
 
@@ -37,7 +39,7 @@ def mature
 
    rex = match_words.join('|')
 
-   return Regexp.new("(#{rex})",  Regexp::EXTENDED|Regexp::IGNORECASE)
+   return Regexp.new("(#{rex})", Regexp::EXTENDED|Regexp::IGNORECASE)
 end
 
 configure do |c|
@@ -49,17 +51,18 @@ configure do |c|
       'server' => 'irc.freenode.net',
       'port' => 6667,
       'exempt' => [],
-      'channel' => '#bottest'
+      'channel' => '#bottest',
+      'logger' => nil
    }
 
    File.open(File.expand_path('./config.yml'), 'r') {|yf|
       new_settings = YAML::load( yf )
       if new_settings
-         new_settings.each_pair {|key, val|
-            settings[key] = val
-         }
+         new_settings.each_pair {|key, val| settings[key] = val }
       end
    }
+
+   settings['logger'] = Logger.new("#{settings['nick']}.log", 'daily')
 
    c.nick = settings['nick'] 
    c.server = settings['server']
@@ -67,6 +70,7 @@ configure do |c|
    c.realname = settings['realname']
    c.verbose = true
    c.version = 'Agent 355 v0.42'
+   c.logger = settings['logger']
 end
 
 on :connect do
@@ -84,7 +88,7 @@ on :channel, mature do
    kick_msg = "That language is not ok in #cplug."
 
    # Log
-   puts "#{nick}: #{action} => #{match.inspect}"
+   log "#{nick}: #{action} => #{match.inspect}"
 
    # Deal with them
    kick channel, nick, kick_msg if !exempt

@@ -9,6 +9,10 @@ require 'yaml'
 require 'json'
 require 'net/http'
 
+# For .lp
+require 'json'
+require 'net/http'
+
 # This is a "fun" little IRC bot written in ruby using the [isaac][i] framework.
 #
 # [i]: https://github.com/ichverstehe/isaac

@@ -112,9 +112,14 @@ on :channel, /^\.lp (\w+)$/ do
    resp = Net::HTTP.get_response(URI.parse(url))
    result = JSON.parse(resp.body)
 
-   track = result['recenttracks']['track']
-   title =  track[0].nil? ? track['name'] : track[0]['name']
-   artist = track[0].nil? ? track['artist']['#text'] : track[0]['artist']['#text']
+   # bot.rb:116:in `__isaac_event_handler': undefined method `[]' for nil:NilClass (NoMethodError)
+   if !result.nil? && !result['recenttracks'].nil? && !result['recenttracks']['track'].nil?
+      track = result['recenttracks']['track']
+      title =  track[0].nil? ? track['name'] : track[0]['name']
+      artist = track[0].nil? ? track['artist']['#text'] : track[0]['artist']['#text']
 
-   msg channel, "#{lp_user} is listening to \"#{title}\" by #{artist}"
+      msg channel, "#{lp_user} is listening to \"#{title}\" by #{artist}."
+   else
+      msg channel, "#{lp_user} is not a valid last.fm user."
+   end
 end

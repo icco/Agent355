@@ -20,13 +20,13 @@ settings = {}
 configure do |c|
    # defaults
    settings = {
-      'realname' => 'Test',
-      'nick' => "mind_flayer2",
+      'realname' => 'Nat Welch',
+      'nick' => "Agent355",
       'ns_pw' => "",
       'server' => 'irc.freenode.net',
       'port' => 6667,
       'exempt' => [],
-      'channel' => '#cplug-bottest',
+      'channel' => '#bottest',
       'logger' => nil
    }
 

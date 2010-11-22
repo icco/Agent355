@@ -1,7 +1,7 @@
 #!/usr/bin/env ruby
 
-require 'rubygems'
 require 'isaac'
+require 'yaml'
 
 # This is a "fun" little IRC bot written in ruby using the [isaac][i] framework.
 #
@@ -61,7 +61,7 @@ configure do |c|
    c.server = settings['server']
    c.port = settings['port']
    c.realname = settings['realname']
-   c.verbose = false
+   c.verbose = true
    c.version = 'Agent 355 v0.42'
 end
 

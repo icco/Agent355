@@ -22,6 +22,7 @@ Requires the following gems to run.
  * Logging of some sort...
    * not sure if we want this...
  * .define
+ * Auto-Rejoin
 
 ## Contributing
 

@@ -3,6 +3,10 @@
 require 'rubygems'
 require 'isaac'
 
+# For .lp
+require 'json'
+require 'net/http'
+
 # This is a "fun" little IRC bot written in ruby using the [isaac][i] framework.
 #
 # [i]: https://github.com/ichverstehe/isaac
@@ -93,4 +97,13 @@ end
 
 on :channel, /^\.source$/ do
    msg channel, "My source is at http://github.com/icco/Agent355."
+end
+
+on :channel, /^\.lp (\w+)$/ do
+   base_url = "http://ws.audioscrobbler.com/2.0/?method=user.getrecenttracks"
+   api = "b25b959554ed76058ac220b7b2e0a026"
+   url = "#{base_url}&limit=1&user=#{lp_user}&api_key=#{api}&limit=1&format=json"
+   resp = Net::HTTP.get_response(URI.parse(url))
+   result = JSON.parse(resp.body)
+   p result.inspect
 end

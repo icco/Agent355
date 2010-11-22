@@ -17,7 +17,7 @@ configure do |c|
    # defaults
    settings = {
       'realname' => 'Nat Welch',
-      'nick' => "Agent355",
+      'nick' => "Agent355Test",
       'ns_pw' => "",
       'server' => 'irc.freenode.net',
       'port' => 6667,
@@ -58,8 +58,8 @@ on :connect do
 end
 
 # this is the function that builds our mature language regex.
-def mature
-   words = [
+def words
+   return [
       'chink',
       'chnk',
       'fag',
@@ -71,7 +71,9 @@ def mature
       'nigger',
       'niggr',
    ]
+end
 
+def mature words
    leet = { 
       "a" => "4@",
       "b" => "68",
@@ -98,7 +100,7 @@ def mature
 end
 
 # parses all mesages for the regex built in mature.
-on :channel, mature do
+on :channel, mature(words) do
    exempt = settings['exempt'].include? nick
    action = "kicked"
    message = "Hi #{nick}. You've been #{action} because the following matched my mature language regex: #{match}."
@@ -114,21 +116,21 @@ end
 
 # .mature
 on :channel, /^\.mature$/ do
-   msg nick, "Mature Regex: #{mature.inspect.tr("\n", "")}"
+   msg nick, "Mature words I kick on: #{words.inspect}"
 end
 
 # .source
 on :channel, /^\.source$/ do
-   msg channel, "My source is at http://github.com/icco/Agent355."
+   msg channel, "My source is at https://github.com/icco/Agent355."
 end
 
 # .lp
 on :channel, /^\.lp (\w+)$/ do
    lp_user = match[0]
-   api = "b25b959554ed76058ac220b7b2e0a026"
+   api = "c8a55898b287950c836a1af12d91ce7d"
 
    base_url = "http://ws.audioscrobbler.com/2.0/?method=user.getrecenttracks"
-   url = "#{base_url}&limit=1&user=#{lp_user}&api_key=#{api}&limit=1&format=json"
+   url = "#{base_url}&user=#{lp_user}&api_key=#{api}&limit=1&format=json"
    resp = Net::HTTP.get_response(URI.parse(url))
    result = JSON.parse(resp.body)
 

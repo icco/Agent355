@@ -12,13 +12,16 @@ settings = {}
 # This is here for now, until the regex is nailed down
 def mature
    words = [
-      'fag',
-      'nigger',
-      'niggar',
-      'niggr',
-      'chnk',
       'chink',
+      'chnk',
+      'fag',
       'gook',
+      'niga',
+      'nigar',
+      'nigga',
+      'niggar',
+      'nigger',
+      'niggr',
    ]
 
    match_words = words.clone

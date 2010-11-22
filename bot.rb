@@ -26,12 +26,14 @@ configure do |c|
       'logger' => nil
    }
 
-   File.open(File.expand_path('./config.yml'), 'r') {|yf|
-      new_settings = YAML::load( yf )
-      if new_settings
-         new_settings.each_pair {|key, val| settings[key] = val }
-      end
-   }
+   if File.exists? './config.yml'
+      File.open(File.expand_path('./config.yml'), 'r') {|yf|
+         new_settings = YAML::load( yf )
+         if new_settings
+            new_settings.each_pair {|key, val| settings[key] = val }
+         end
+      }
+   end
 
    settings['logger'] = Logger.new("#{settings['nick']}.log", 'daily')
 

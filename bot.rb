@@ -20,13 +20,13 @@ settings = {}
 configure do |c|
    # defaults
    settings = {
-      'realname' => 'Nat Welch',
-      'nick' => "Agent355",
+      'realname' => 'Test',
+      'nick' => "mind_flayer2",
       'ns_pw' => "",
       'server' => 'irc.freenode.net',
       'port' => 6667,
       'exempt' => [],
-      'channel' => '#bottest',
+      'channel' => '#cplug-bottest',
       'logger' => nil
    }
 
@@ -76,12 +76,32 @@ def mature
       'niggr',
    ]
 
-   match_words = words.clone
-   words.each {|w|
-      match_words << w.split('').join('+[^A-Za-z]*')
+   leet = { 
+      "a" => "4@",
+      "b" => "68",
+      "c" => "(",
+      "e" => "3",
+      "g" => "6",
+      "i" => "1!",
+      "i" => "17",
+      "o" => "0",
+      "p" => "9",
+      "s" => "5$",
+      "t" => "7+",
    }
 
-   match_words << 'f+\W*[a@]+\W*g'
+   words.map! {|w|
+      w.split('').map {|c|
+         c.gsub!(Regexp.compile("[#{leet.keys.to_s}]")) {|m| 
+            "[#{Regexp.escape(leet[m]) + m}]" }
+         c + '+[^A-Za-z]*'
+      }
+   }
+
+   match_words = words.clone
+#   words.each {|w|
+#      match_words << w.split('').join('+[^A-Za-z]*')
+#   }
 
    rex = match_words.join('|')
 

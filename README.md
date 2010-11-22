@@ -4,6 +4,13 @@ A bot to control the insanity that is taking place in #cplug. Requires [isaac][i
 
 ![Agent 355](https://github.com/icco/Agent355/raw/master/Y_-_The_Last_Man_013.jpg)
 
+## TODO
+
+* .seen
+* timed bans
+* .cplug (latest cplug.org post, auto-post on new)
+* .csl (latest csl_status Twitter post, auto-post on new)
+
 ## License
 
 Copyright (c) 2010 Nathaniel Welch

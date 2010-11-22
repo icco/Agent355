@@ -16,13 +16,16 @@ settings = {}
 # This is here for now, until the regex is nailed down
 def mature
    words = [
-      'fag',
-      'nigger',
-      'niggar',
-      'niggr',
-      'chnk',
       'chink',
+      'chnk',
+      'fag',
       'gook',
+      'niga',
+      'nigar',
+      'nigga',
+      'niggar',
+      'nigger',
+      'niggr',
    ]
 
    match_words = words.clone
@@ -75,13 +78,17 @@ on :connect do
 end
 
 on :channel, mature do
-   if !settings['exempt'].include? nick
-      action = "kicked"
-      message = "Hi #{nick}. You've been #{action} because the following matched my mature language regex: #{match.inspect}."
-      kick_msg = "That language is not ok in #cplug."
-      #msg channel, message
-      puts "#{nick}: #{action} => #{match.inspect}"
-   end
+   exempt = settings['exempt'].include? nick
+   action = "kicked"
+   message = "Hi #{nick}. You've been #{action} because the following matched my mature language regex: #{match}."
+   kick_msg = "That language is not ok in #cplug."
+
+   # Log
+   puts "#{nick}: #{action} => #{match.inspect}"
+
+   # Deal with them
+   kick channel, nick, kick_msg if !exempt
+   msg nick, message if !exempt
 end
 
 on :channel, /^\.mature$/ do

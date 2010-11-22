@@ -2,14 +2,23 @@
 
 A bot to control the insanity that is taking place in #cplug. Requires [isaac][i] to run.
 
-![Agent 355](https://github.com/icco/Agent355/raw/master/Y_-_The_Last_Man_013.jpg)
+[![Agent 355](https://github.com/icco/Agent355/raw/master/Y_-_The_Last_Man_013.jpg)](https://secure.wikimedia.org/wikipedia/en/wiki/List_of_Y:_The_Last_Man_characters#Agent_355)
 
 ## TODO
 
-* .seen
-* timed bans
-* .cplug (latest cplug.org post, auto-post on new)
-* .csl (latest csl_status Twitter post, auto-post on new)
+ * .seen
+ * timed bans
+ * .rss (or maybe .news)
+    * .cplug (latest cplug.org post, auto-post on new)
+    * .csl (latest csl_status Twitter post, auto-post on new)
+ * Logging of some sort...
+   * not sure if we want this...
+ * #define
+
+## Contributing
+
+Fork and then send me a pull request. If it is a new feature make sure to add
+it to .help and explain what the intended output is.
 
 ## License
 

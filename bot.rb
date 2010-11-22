@@ -100,10 +100,17 @@ on :channel, /^\.source$/ do
 end
 
 on :channel, /^\.lp (\w+)$/ do
-   base_url = "http://ws.audioscrobbler.com/2.0/?method=user.getrecenttracks"
+   lp_user = match[0]
    api = "b25b959554ed76058ac220b7b2e0a026"
+
+   base_url = "http://ws.audioscrobbler.com/2.0/?method=user.getrecenttracks"
    url = "#{base_url}&limit=1&user=#{lp_user}&api_key=#{api}&limit=1&format=json"
    resp = Net::HTTP.get_response(URI.parse(url))
    result = JSON.parse(resp.body)
-   p result.inspect
+
+   track = result['recenttracks']['track']
+   title =  track[0].nil? ? track['name'] : track[0]['name']
+   artist = track[0].nil? ? track['artist']['#text'] : track[0]['artist']['#text']
+
+   msg channel, "#{lp_user} is listening to \"#{title}\" by #{artist}"
 end

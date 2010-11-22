@@ -4,8 +4,6 @@ require 'rubygems'
 require 'logger'
 require 'isaac'
 require 'yaml'
-
-# For .lp
 require 'json'
 require 'net/http'
 
@@ -17,9 +15,53 @@ require 'net/http'
 #
 # [i]: https://github.com/ichverstehe/isaac
 
+# First we parse config.yml and set things up.
 settings = {}
+configure do |c|
+   # defaults
+   settings = {
+      'realname' => 'Nat Welch',
+      'nick' => "Agent355",
+      'ns_pw' => "",
+      'server' => 'irc.freenode.net',
+      'port' => 6667,
+      'exempt' => [],
+      'channel' => '#bottest',
+      'logger' => nil
+   }
 
-# This is here for now, until the regex is nailed down
+   if File.exists? './config.yml'
+      File.open(File.expand_path('./config.yml'), 'r') {|yf|
+         new_settings = YAML::load( yf )
+         if new_settings
+            new_settings.each_pair {|key, val| settings[key] = val }
+         end
+      }
+   end
+
+   settings['logger'] = Logger.new("#{settings['nick']}.log", 'daily')
+
+   # then match our config settings with isaac's
+   c.nick = settings['nick'] 
+   c.server = settings['server']
+   c.port = settings['port']
+   c.realname = settings['realname']
+   c.verbose = false
+   c.version = 'Agent 355 v0.42'
+   c.logger = settings['logger']
+end
+
+# Now we define what we are going to do on connect.
+on :connect do
+   # we will only be able to op if we auth with Nickserv
+   if settings['ns_pw']
+      msg 'NickServ', "IDENTIFY #{settings['nick']} #{settings['ns_pw']}"
+   end
+
+   join settings['channel']
+end
+
+# this is the function that builds our mature language regex.
 def mature
    words = [
       'chink',
@@ -46,45 +88,7 @@ def mature
    return Regexp.new("(#{rex})", Regexp::EXTENDED|Regexp::IGNORECASE)
 end
 
-configure do |c|
-   # defaults
-   settings = {
-      'realname' => 'Nat Welch',
-      'nick' => "Agent355",
-      'ns_pw' => "",
-      'server' => 'irc.freenode.net',
-      'port' => 6667,
-      'exempt' => [],
-      'channel' => '#bottest',
-      'logger' => nil
-   }
-
-   File.open(File.expand_path('./config.yml'), 'r') {|yf|
-      new_settings = YAML::load( yf )
-      if new_settings
-         new_settings.each_pair {|key, val| settings[key] = val }
-      end
-   }
-
-   settings['logger'] = Logger.new("#{settings['nick']}.log", 'daily')
-
-   c.nick = settings['nick'] 
-   c.server = settings['server']
-   c.port = settings['port']
-   c.realname = settings['realname']
-   c.verbose = true
-   c.version = 'Agent 355 v0.42'
-   c.logger = settings['logger']
-end
-
-on :connect do
-   if settings['ns_pw']
-      msg 'NickServ', "IDENTIFY #{settings['nick']} #{settings['ns_pw']}"
-   end
-
-   join settings['channel']
-end
-
+# parses all mesages for the regex built in mature.
 on :channel, mature do
    exempt = settings['exempt'].include? nick
    action = "kicked"
@@ -99,14 +103,17 @@ on :channel, mature do
    msg nick, message if !exempt
 end
 
+# .mature
 on :channel, /^\.mature$/ do
    msg nick, "Mature Regex: #{mature.inspect.tr("\n", "")}"
 end
 
+# .source
 on :channel, /^\.source$/ do
    msg channel, "My source is at http://github.com/icco/Agent355."
 end
 
+# .lp
 on :channel, /^\.lp (\w+)$/ do
    lp_user = match[0]
    api = "b25b959554ed76058ac220b7b2e0a026"
@@ -116,9 +123,18 @@ on :channel, /^\.lp (\w+)$/ do
    resp = Net::HTTP.get_response(URI.parse(url))
    result = JSON.parse(resp.body)
 
-   track = result['recenttracks']['track']
-   title =  track[0].nil? ? track['name'] : track[0]['name']
-   artist = track[0].nil? ? track['artist']['#text'] : track[0]['artist']['#text']
+   if !result.nil? && !result['recenttracks'].nil? && !result['recenttracks']['track'].nil?
+      track = result['recenttracks']['track']
+      title =  track[0].nil? ? track['name'] : track[0]['name']
+      artist = track[0].nil? ? track['artist']['#text'] : track[0]['artist']['#text']
 
-   msg channel, "#{lp_user} is listening to \"#{title}\" by #{artist}"
+      msg channel, "#{lp_user} is listening to \"#{title}\" by #{artist}."
+   else
+      msg channel, "#{lp_user} is not a valid last.fm user."
+   end
+end
+
+# .help
+on :channel, /^\.help$/ do
+   msg channel, "I respond to the following: .lp, .mature, .source, .help"
 end

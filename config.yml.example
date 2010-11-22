@@ -1,0 +1,4 @@
+ns_pw: 'password'
+exempt: ['nerfle', 'nabru']
+channel: '#icco-test'
+nick: 'Agent355-test'

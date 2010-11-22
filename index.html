@@ -1,80 +1,277 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
-	"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
-
-<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<!DOCTYPE html>
+<html>
 <head>
-	<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
-
-	<title>icco/Agent355 @ GitHub</title>
-	
-	<style type="text/css">
-		body {
-  		margin-top: 1.0em;
-  		background-color: #2b5680;
-		  font-family: "Helvetica,Arial,FreeSans";
-  		color: #ffffff;
-    }
-    #container {
-      margin: 0 auto;
-      width: 700px;
-    }
-		h1 { font-size: 3.8em; color: #d4a97f; margin-bottom: 3px; }
-		h1 .small { font-size: 0.4em; }
-		h1 a { text-decoration: none }
-		h2 { font-size: 1.5em; color: #d4a97f; }
-    h3 { text-align: center; color: #d4a97f; }
-    a { color: #d4a97f; }
-    .description { font-size: 1.2em; margin-bottom: 30px; margin-top: 30px; font-style: italic;}
-    .download { float: right; }
-		pre { background: #000; color: #fff; padding: 15px;}
-    hr { border: 0; width: 80%; border-bottom: 1px solid #aaa}
-    .footer { text-align:center; padding-top:30px; font-style: italic; }
-	</style>
-	
+  <meta http-equiv="content-type" content="text/html;charset=utf-8">
+  <title>bot.rb</title>
+  <link rel="stylesheet" href="http://jashkenas.github.com/docco/resources/docco.css">
 </head>
-
 <body>
-  <a href="http://github.com/icco/Agent355"><img style="position: absolute; top: 0; right: 0; border: 0;" src="http://s3.amazonaws.com/github/ribbons/forkme_right_darkblue_121621.png" alt="Fork me on GitHub" /></a>
+<div id='container'>
+  <div id="background"></div>
+  <table cellspacing=0 cellpadding=0>
+  <thead>
+    <tr>
+      <th class=docs><h1>bot.rb</h1></th>
+      <th class=code></th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr id='section-1'>
+      <td class=docs>
+        <div class="octowrap">
+          <a class="octothorpe" href="#section-1">#</a>
+        </div>
+        
+      </td>
+      <td class=code>
+        <div class='highlight'><pre><span class="nb">require</span> <span class="s1">&#39;rubygems&#39;</span>
+<span class="nb">require</span> <span class="s1">&#39;logger&#39;</span>
+<span class="nb">require</span> <span class="s1">&#39;isaac&#39;</span>
+<span class="nb">require</span> <span class="s1">&#39;yaml&#39;</span>
+<span class="nb">require</span> <span class="s1">&#39;json&#39;</span>
+<span class="nb">require</span> <span class="s1">&#39;net/http&#39;</span></pre></div>
+      </td>
+    </tr>
+    <tr id='section-2'>
+      <td class=docs>
+        <div class="octowrap">
+          <a class="octothorpe" href="#section-2">#</a>
+        </div>
+        <p> This is a &ldquo;fun&rdquo; little IRC bot written in ruby using the <a href="https://github.com/ichverstehe/isaac">isaac</a> framework.</p>
+      </td>
+      <td class=code>
+        <div class='highlight'><pre></pre></div>
+      </td>
+    </tr>
+    <tr id='section-3'>
+      <td class=docs>
+        <div class="octowrap">
+          <a class="octothorpe" href="#section-3">#</a>
+        </div>
+        <p> First we parse config.yml and set things up.</p>
+      </td>
+      <td class=code>
+        <div class='highlight'><pre><span class="n">settings</span> <span class="o">=</span> <span class="p">{}</span>
+<span class="n">configure</span> <span class="k">do</span> <span class="o">|</span><span class="n">c</span><span class="o">|</span></pre></div>
+      </td>
+    </tr>
+    <tr id='section-4'>
+      <td class=docs>
+        <div class="octowrap">
+          <a class="octothorpe" href="#section-4">#</a>
+        </div>
+        <p> defaults</p>
+      </td>
+      <td class=code>
+        <div class='highlight'><pre>   <span class="n">settings</span> <span class="o">=</span> <span class="p">{</span>
+      <span class="s1">&#39;realname&#39;</span> <span class="o">=&gt;</span> <span class="s1">&#39;Nat Welch&#39;</span><span class="p">,</span>
+      <span class="s1">&#39;nick&#39;</span> <span class="o">=&gt;</span> <span class="s2">&quot;Agent355&quot;</span><span class="p">,</span>
+      <span class="s1">&#39;ns_pw&#39;</span> <span class="o">=&gt;</span> <span class="s2">&quot;&quot;</span><span class="p">,</span>
+      <span class="s1">&#39;server&#39;</span> <span class="o">=&gt;</span> <span class="s1">&#39;irc.freenode.net&#39;</span><span class="p">,</span>
+      <span class="s1">&#39;port&#39;</span> <span class="o">=&gt;</span> <span class="mi">6667</span><span class="p">,</span>
+      <span class="s1">&#39;exempt&#39;</span> <span class="o">=&gt;</span> <span class="o">[]</span><span class="p">,</span>
+      <span class="s1">&#39;channel&#39;</span> <span class="o">=&gt;</span> <span class="s1">&#39;#bottest&#39;</span><span class="p">,</span>
+      <span class="s1">&#39;logger&#39;</span> <span class="o">=&gt;</span> <span class="kp">nil</span>
+   <span class="p">}</span>
 
-  <div id="container">
+   <span class="no">File</span><span class="o">.</span><span class="n">open</span><span class="p">(</span><span class="no">File</span><span class="o">.</span><span class="n">expand_path</span><span class="p">(</span><span class="s1">&#39;./config.yml&#39;</span><span class="p">),</span> <span class="s1">&#39;r&#39;</span><span class="p">)</span> <span class="p">{</span><span class="o">|</span><span class="n">yf</span><span class="o">|</span>
+      <span class="n">new_settings</span> <span class="o">=</span> <span class="no">YAML</span><span class="o">::</span><span class="nb">load</span><span class="p">(</span> <span class="n">yf</span> <span class="p">)</span>
+      <span class="k">if</span> <span class="n">new_settings</span>
+         <span class="n">new_settings</span><span class="o">.</span><span class="n">each_pair</span> <span class="p">{</span><span class="o">|</span><span class="n">key</span><span class="p">,</span> <span class="n">val</span><span class="o">|</span> <span class="n">settings</span><span class="o">[</span><span class="n">key</span><span class="o">]</span> <span class="o">=</span> <span class="n">val</span> <span class="p">}</span>
+      <span class="k">end</span>
+   <span class="p">}</span>
 
-    <div class="download">
-      <a href="http://github.com/icco/Agent355/zipball/master">
-        <img border="0" width="90" src="http://github.com/images/modules/download/zip.png"></a>
-      <a href="http://github.com/icco/Agent355/tarball/master">
-        <img border="0" width="90" src="http://github.com/images/modules/download/tar.png"></a>
-    </div>
+   <span class="n">settings</span><span class="o">[</span><span class="s1">&#39;logger&#39;</span><span class="o">]</span> <span class="o">=</span> <span class="no">Logger</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="s2">&quot;</span><span class="si">#{</span><span class="n">settings</span><span class="o">[</span><span class="s1">&#39;nick&#39;</span><span class="o">]</span><span class="si">}</span><span class="s2">.log&quot;</span><span class="p">,</span> <span class="s1">&#39;daily&#39;</span><span class="p">)</span></pre></div>
+      </td>
+    </tr>
+    <tr id='section-5'>
+      <td class=docs>
+        <div class="octowrap">
+          <a class="octothorpe" href="#section-5">#</a>
+        </div>
+        <p> then match our config settings with isaac&rsquo;s</p>
+      </td>
+      <td class=code>
+        <div class='highlight'><pre>   <span class="n">c</span><span class="o">.</span><span class="n">nick</span> <span class="o">=</span> <span class="n">settings</span><span class="o">[</span><span class="s1">&#39;nick&#39;</span><span class="o">]</span> 
+   <span class="n">c</span><span class="o">.</span><span class="n">server</span> <span class="o">=</span> <span class="n">settings</span><span class="o">[</span><span class="s1">&#39;server&#39;</span><span class="o">]</span>
+   <span class="n">c</span><span class="o">.</span><span class="n">port</span> <span class="o">=</span> <span class="n">settings</span><span class="o">[</span><span class="s1">&#39;port&#39;</span><span class="o">]</span>
+   <span class="n">c</span><span class="o">.</span><span class="n">realname</span> <span class="o">=</span> <span class="n">settings</span><span class="o">[</span><span class="s1">&#39;realname&#39;</span><span class="o">]</span>
+   <span class="n">c</span><span class="o">.</span><span class="n">verbose</span> <span class="o">=</span> <span class="kp">false</span>
+   <span class="n">c</span><span class="o">.</span><span class="n">version</span> <span class="o">=</span> <span class="s1">&#39;Agent 355 v0.42&#39;</span>
+   <span class="n">c</span><span class="o">.</span><span class="n">logger</span> <span class="o">=</span> <span class="n">settings</span><span class="o">[</span><span class="s1">&#39;logger&#39;</span><span class="o">]</span>
+<span class="k">end</span></pre></div>
+      </td>
+    </tr>
+    <tr id='section-6'>
+      <td class=docs>
+        <div class="octowrap">
+          <a class="octothorpe" href="#section-6">#</a>
+        </div>
+        <p> Now we define what we are going to do on connect.</p>
+      </td>
+      <td class=code>
+        <div class='highlight'><pre><span class="n">on</span> <span class="ss">:connect</span> <span class="k">do</span></pre></div>
+      </td>
+    </tr>
+    <tr id='section-7'>
+      <td class=docs>
+        <div class="octowrap">
+          <a class="octothorpe" href="#section-7">#</a>
+        </div>
+        <p> we will only be able to op if we auth with Nickserv</p>
+      </td>
+      <td class=code>
+        <div class='highlight'><pre>   <span class="k">if</span> <span class="n">settings</span><span class="o">[</span><span class="s1">&#39;ns_pw&#39;</span><span class="o">]</span>
+      <span class="n">msg</span> <span class="s1">&#39;NickServ&#39;</span><span class="p">,</span> <span class="s2">&quot;IDENTIFY </span><span class="si">#{</span><span class="n">settings</span><span class="o">[</span><span class="s1">&#39;nick&#39;</span><span class="o">]</span><span class="si">}</span><span class="s2"> </span><span class="si">#{</span><span class="n">settings</span><span class="o">[</span><span class="s1">&#39;ns_pw&#39;</span><span class="o">]</span><span class="si">}</span><span class="s2">&quot;</span>
+   <span class="k">end</span>
 
-    <h1><a href="http://github.com/icco/Agent355">Agent355</a>
-      <span class="small">by <a href="http://github.com/icco">icco</a></span></h1>
+   <span class="n">join</span> <span class="n">settings</span><span class="o">[</span><span class="s1">&#39;channel&#39;</span><span class="o">]</span>
+<span class="k">end</span></pre></div>
+      </td>
+    </tr>
+    <tr id='section-8'>
+      <td class=docs>
+        <div class="octowrap">
+          <a class="octothorpe" href="#section-8">#</a>
+        </div>
+        <p> this is the function that builds our mature language regex.</p>
+      </td>
+      <td class=code>
+        <div class='highlight'><pre><span class="k">def</span> <span class="nf">mature</span>
+   <span class="n">words</span> <span class="o">=</span> <span class="o">[</span>
+      <span class="s1">&#39;chink&#39;</span><span class="p">,</span>
+      <span class="s1">&#39;chnk&#39;</span><span class="p">,</span>
+      <span class="s1">&#39;fag&#39;</span><span class="p">,</span>
+      <span class="s1">&#39;gook&#39;</span><span class="p">,</span>
+      <span class="s1">&#39;niga&#39;</span><span class="p">,</span>
+      <span class="s1">&#39;nigar&#39;</span><span class="p">,</span>
+      <span class="s1">&#39;nigga&#39;</span><span class="p">,</span>
+      <span class="s1">&#39;niggar&#39;</span><span class="p">,</span>
+      <span class="s1">&#39;nigger&#39;</span><span class="p">,</span>
+      <span class="s1">&#39;niggr&#39;</span><span class="p">,</span>
+   <span class="o">]</span>
 
-    <div class="description">
-      A bot for #cplug
-    </div>
+   <span class="n">match_words</span> <span class="o">=</span> <span class="n">words</span><span class="o">.</span><span class="n">clone</span>
+   <span class="n">words</span><span class="o">.</span><span class="n">each</span> <span class="p">{</span><span class="o">|</span><span class="n">w</span><span class="o">|</span>
+      <span class="n">match_words</span> <span class="o">&lt;&lt;</span> <span class="n">w</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="s1">&#39;+[^A-Za-z]*&#39;</span><span class="p">)</span>
+   <span class="p">}</span>
 
-    <h2>Authors</h2>
-<p>Nat Welch (nat@natwelch.com)<br/>James Pearson (xiong.chiamiov@gmail.com)<br/><br/>      </p>
-<h2>Contact</h2>
-<p>Nat Welch (nat@natwelch.com)<br/>      </p>
+   <span class="n">match_words</span> <span class="o">&lt;&lt;</span> <span class="s1">&#39;f+\W*[a@]+\W*g&#39;</span>
 
+   <span class="n">rex</span> <span class="o">=</span> <span class="n">match_words</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="s1">&#39;|&#39;</span><span class="p">)</span>
 
-    <h2>Download</h2>
-    <p>
-      You can download this project in either
-      <a href="http://github.com/icco/Agent355/zipball/master">zip</a> or
-      <a href="http://github.com/icco/Agent355/tarball/master">tar</a> formats.
-    </p>
-    <p>You can also clone the project with <a href="http://git-scm.com">Git</a>
-      by running:
-      <pre>$ git clone git://github.com/icco/Agent355</pre>
-    </p>
+   <span class="k">return</span> <span class="no">Regexp</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="s2">&quot;(</span><span class="si">#{</span><span class="n">rex</span><span class="si">}</span><span class="s2">)&quot;</span><span class="p">,</span> <span class="no">Regexp</span><span class="o">::</span><span class="no">EXTENDED</span><span class="o">|</span><span class="no">Regexp</span><span class="o">::</span><span class="no">IGNORECASE</span><span class="p">)</span>
+<span class="k">end</span></pre></div>
+      </td>
+    </tr>
+    <tr id='section-9'>
+      <td class=docs>
+        <div class="octowrap">
+          <a class="octothorpe" href="#section-9">#</a>
+        </div>
+        <p> parses all mesages for the regex built in mature.</p>
+      </td>
+      <td class=code>
+        <div class='highlight'><pre><span class="n">on</span> <span class="ss">:channel</span><span class="p">,</span> <span class="n">mature</span> <span class="k">do</span>
+   <span class="n">exempt</span> <span class="o">=</span> <span class="n">settings</span><span class="o">[</span><span class="s1">&#39;exempt&#39;</span><span class="o">].</span><span class="n">include?</span> <span class="n">nick</span>
+   <span class="n">action</span> <span class="o">=</span> <span class="s2">&quot;kicked&quot;</span>
+   <span class="n">message</span> <span class="o">=</span> <span class="s2">&quot;Hi </span><span class="si">#{</span><span class="n">nick</span><span class="si">}</span><span class="s2">. You&#39;ve been </span><span class="si">#{</span><span class="n">action</span><span class="si">}</span><span class="s2"> because the following matched my mature language regex: </span><span class="si">#{</span><span class="n">match</span><span class="si">}</span><span class="s2">.&quot;</span>
+   <span class="n">kick_msg</span> <span class="o">=</span> <span class="s2">&quot;That language is not ok in #cplug.&quot;</span></pre></div>
+      </td>
+    </tr>
+    <tr id='section-10'>
+      <td class=docs>
+        <div class="octowrap">
+          <a class="octothorpe" href="#section-10">#</a>
+        </div>
+        <p> Log</p>
+      </td>
+      <td class=code>
+        <div class='highlight'><pre>   <span class="n">log</span> <span class="s2">&quot;</span><span class="si">#{</span><span class="n">nick</span><span class="si">}</span><span class="s2">: </span><span class="si">#{</span><span class="n">action</span><span class="si">}</span><span class="s2"> =&gt; </span><span class="si">#{</span><span class="n">match</span><span class="o">.</span><span class="n">inspect</span><span class="si">}</span><span class="s2">&quot;</span></pre></div>
+      </td>
+    </tr>
+    <tr id='section-11'>
+      <td class=docs>
+        <div class="octowrap">
+          <a class="octothorpe" href="#section-11">#</a>
+        </div>
+        <p> Deal with them</p>
+      </td>
+      <td class=code>
+        <div class='highlight'><pre>   <span class="n">kick</span> <span class="n">channel</span><span class="p">,</span> <span class="n">nick</span><span class="p">,</span> <span class="n">kick_msg</span> <span class="k">if</span> <span class="o">!</span><span class="n">exempt</span>
+   <span class="n">msg</span> <span class="n">nick</span><span class="p">,</span> <span class="n">message</span> <span class="k">if</span> <span class="o">!</span><span class="n">exempt</span>
+<span class="k">end</span></pre></div>
+      </td>
+    </tr>
+    <tr id='section-12'>
+      <td class=docs>
+        <div class="octowrap">
+          <a class="octothorpe" href="#section-12">#</a>
+        </div>
+        <p> .mature</p>
+      </td>
+      <td class=code>
+        <div class='highlight'><pre><span class="n">on</span> <span class="ss">:channel</span><span class="p">,</span><span class="sr"> /^\.mature$/</span> <span class="k">do</span>
+   <span class="n">msg</span> <span class="n">nick</span><span class="p">,</span> <span class="s2">&quot;Mature Regex: </span><span class="si">#{</span><span class="n">mature</span><span class="o">.</span><span class="n">inspect</span><span class="o">.</span><span class="n">tr</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">)</span><span class="si">}</span><span class="s2">&quot;</span>
+<span class="k">end</span></pre></div>
+      </td>
+    </tr>
+    <tr id='section-13'>
+      <td class=docs>
+        <div class="octowrap">
+          <a class="octothorpe" href="#section-13">#</a>
+        </div>
+        <p> .source</p>
+      </td>
+      <td class=code>
+        <div class='highlight'><pre><span class="n">on</span> <span class="ss">:channel</span><span class="p">,</span><span class="sr"> /^\.source$/</span> <span class="k">do</span>
+   <span class="n">msg</span> <span class="n">channel</span><span class="p">,</span> <span class="s2">&quot;My source is at http://github.com/icco/Agent355.&quot;</span>
+<span class="k">end</span></pre></div>
+      </td>
+    </tr>
+    <tr id='section-14'>
+      <td class=docs>
+        <div class="octowrap">
+          <a class="octothorpe" href="#section-14">#</a>
+        </div>
+        <p> .lp</p>
+      </td>
+      <td class=code>
+        <div class='highlight'><pre><span class="n">on</span> <span class="ss">:channel</span><span class="p">,</span><span class="sr"> /^\.lp (\w+)$/</span> <span class="k">do</span>
+   <span class="n">lp_user</span> <span class="o">=</span> <span class="n">match</span><span class="o">[</span><span class="mi">0</span><span class="o">]</span>
+   <span class="n">api</span> <span class="o">=</span> <span class="s2">&quot;b25b959554ed76058ac220b7b2e0a026&quot;</span>
 
-    <div class="footer">
-      get the source code on GitHub : <a href="http://github.com/icco/Agent355">icco/Agent355</a>
-    </div>
+   <span class="n">base_url</span> <span class="o">=</span> <span class="s2">&quot;http://ws.audioscrobbler.com/2.0/?method=user.getrecenttracks&quot;</span>
+   <span class="n">url</span> <span class="o">=</span> <span class="s2">&quot;</span><span class="si">#{</span><span class="n">base_url</span><span class="si">}</span><span class="s2">&amp;limit=1&amp;user=</span><span class="si">#{</span><span class="n">lp_user</span><span class="si">}</span><span class="s2">&amp;api_key=</span><span class="si">#{</span><span class="n">api</span><span class="si">}</span><span class="s2">&amp;limit=1&amp;format=json&quot;</span>
+   <span class="n">resp</span> <span class="o">=</span> <span class="no">Net</span><span class="o">::</span><span class="no">HTTP</span><span class="o">.</span><span class="n">get_response</span><span class="p">(</span><span class="no">URI</span><span class="o">.</span><span class="n">parse</span><span class="p">(</span><span class="n">url</span><span class="p">))</span>
+   <span class="n">result</span> <span class="o">=</span> <span class="no">JSON</span><span class="o">.</span><span class="n">parse</span><span class="p">(</span><span class="n">resp</span><span class="o">.</span><span class="n">body</span><span class="p">)</span>
 
-  </div>
+   <span class="k">if</span> <span class="o">!</span><span class="n">result</span><span class="o">.</span><span class="n">nil?</span> <span class="o">&amp;&amp;</span> <span class="o">!</span><span class="n">result</span><span class="o">[</span><span class="s1">&#39;recenttracks&#39;</span><span class="o">].</span><span class="n">nil?</span> <span class="o">&amp;&amp;</span> <span class="o">!</span><span class="n">result</span><span class="o">[</span><span class="s1">&#39;recenttracks&#39;</span><span class="o">][</span><span class="s1">&#39;track&#39;</span><span class="o">].</span><span class="n">nil?</span>
+      <span class="n">track</span> <span class="o">=</span> <span class="n">result</span><span class="o">[</span><span class="s1">&#39;recenttracks&#39;</span><span class="o">][</span><span class="s1">&#39;track&#39;</span><span class="o">]</span>
+      <span class="n">title</span> <span class="o">=</span>  <span class="n">track</span><span class="o">[</span><span class="mi">0</span><span class="o">].</span><span class="n">nil?</span> <span class="p">?</span> <span class="n">track</span><span class="o">[</span><span class="s1">&#39;name&#39;</span><span class="o">]</span> <span class="p">:</span> <span class="n">track</span><span class="o">[</span><span class="mi">0</span><span class="o">][</span><span class="s1">&#39;name&#39;</span><span class="o">]</span>
+      <span class="n">artist</span> <span class="o">=</span> <span class="n">track</span><span class="o">[</span><span class="mi">0</span><span class="o">].</span><span class="n">nil?</span> <span class="p">?</span> <span class="n">track</span><span class="o">[</span><span class="s1">&#39;artist&#39;</span><span class="o">][</span><span class="s1">&#39;#text&#39;</span><span class="o">]</span> <span class="p">:</span> <span class="n">track</span><span class="o">[</span><span class="mi">0</span><span class="o">][</span><span class="s1">&#39;artist&#39;</span><span class="o">][</span><span class="s1">&#39;#text&#39;</span><span class="o">]</span>
 
-  
+      <span class="n">msg</span> <span class="n">channel</span><span class="p">,</span> <span class="s2">&quot;</span><span class="si">#{</span><span class="n">lp_user</span><span class="si">}</span><span class="s2"> is listening to </span><span class="se">\&quot;</span><span class="si">#{</span><span class="n">title</span><span class="si">}</span><span class="se">\&quot;</span><span class="s2"> by </span><span class="si">#{</span><span class="n">artist</span><span class="si">}</span><span class="s2">.&quot;</span>
+   <span class="k">else</span>
+      <span class="n">msg</span> <span class="n">channel</span><span class="p">,</span> <span class="s2">&quot;</span><span class="si">#{</span><span class="n">lp_user</span><span class="si">}</span><span class="s2"> is not a valid last.fm user.&quot;</span>
+   <span class="k">end</span>
+<span class="k">end</span></pre></div>
+      </td>
+    </tr>
+    <tr id='section-15'>
+      <td class=docs>
+        <div class="octowrap">
+          <a class="octothorpe" href="#section-15">#</a>
+        </div>
+        <p> .help</p>
+
+      </td>
+      <td class=code>
+        <div class='highlight'><pre><span class="n">on</span> <span class="ss">:channel</span><span class="p">,</span><span class="sr"> /^\.help$/</span> <span class="k">do</span>
+   <span class="n">msg</span> <span class="n">channel</span><span class="p">,</span> <span class="s2">&quot;I respond to the following: .lp, .mature, .source, .help&quot;</span>
+<span class="k">end</span></pre></div>
+      </td>
+    </tr>
+    </table>
+</div>
 </body>
-</html>

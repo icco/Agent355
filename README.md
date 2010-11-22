@@ -10,6 +10,8 @@ A bot to control the insanity that is taking place in #cplug. Requires [isaac][i
 * timed bans
 * .cplug (latest cplug.org post, auto-post on new)
 * .csl (latest csl_status Twitter post, auto-post on new)
+* 1337 blocks
+* Multiline handling
 
 ## License
 

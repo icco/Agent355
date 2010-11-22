@@ -91,14 +91,10 @@ def mature
          c.gsub!(Regexp.compile("[#{leet.keys.to_s}]")) {|m| 
             "[#{Regexp.escape(leet[m]) + m}]" }
          c + '+[^A-Za-z]*'
-      }
+      }.join
    }
 
-   match_words = words.clone
-
-   rex = match_words.join('|')
-
-   return Regexp.new("(#{rex})", Regexp::EXTENDED|Regexp::IGNORECASE)
+   return Regexp.new("(#{words.join('|')})", Regexp::EXTENDED|Regexp::IGNORECASE)
 end
 
 # parses all mesages for the regex built in mature.

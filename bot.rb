@@ -95,9 +95,6 @@ def mature
    }
 
    match_words = words.clone
-#   words.each {|w|
-#      match_words << w.split('').join('+[^A-Za-z]*')
-#   }
 
    rex = match_words.join('|')
 

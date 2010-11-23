@@ -6,11 +6,13 @@ Requires the following gems to run.
 
  * [isaac][i]
  * [json][j]
+ * [sqlite3-ruby][s] - apt-get install `libsqlite3-dev` and `ruby-dev` first if you are on debian
 
 [![Agent 355](https://github.com/icco/Agent355/raw/master/Y_-_The_Last_Man_013.jpg)](https://secure.wikimedia.org/wikipedia/en/wiki/List_of_Y:_The_Last_Man_characters#Agent_355)
 
 [i]: https://github.com/icco/isaac
 [j]: http://flori.github.com/json/
+[s]: https://github.com/luislavena/sqlite3-ruby
 
 ## TODO
 

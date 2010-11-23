@@ -7,6 +7,8 @@ require 'yaml'
 require 'json'
 require 'net/http'
 
+require 'utils'
+
 # This is a "fun" little IRC bot written in ruby using the [isaac][i] framework.
 #
 # [i]: https://github.com/ichverstehe/isaac
@@ -16,13 +18,14 @@ settings = {}
 configure do |c|
    # defaults
    settings = {
-      'realname' => 'Nat Welch',
+      'realname' => 'Test',
       'nick' => "Agent355Test",
       'ns_pw' => "",
       'server' => 'irc.freenode.net',
       'port' => 6667,
       'exempt' => [],
       'channel' => '#bottest',
+      'db' => 'botDB.db',
       'logger' => nil
    }
 
@@ -34,6 +37,8 @@ configure do |c|
          end
       }
    end
+
+   Utils.buildDB settings['db']
 
    settings['logger'] = Logger.new("#{settings['nick']}.log", 'daily')
 
@@ -57,50 +62,8 @@ on :connect do
    join settings['channel']
 end
 
-# this is the function that builds our mature language regex.
-def words
-   return [
-      'chink',
-      'chnk',
-      'fag',
-      'gook',
-      'niga',
-      'nigar',
-      'nigga',
-      'niggar',
-      'nigger',
-      'niggr',
-   ]
-end
-
-def mature words
-   leet = { 
-      "a" => "4@",
-      "b" => "68",
-      "c" => "(",
-      "e" => "3",
-      "g" => "6",
-      "i" => "1!",
-      "i" => "17",
-      "o" => "0",
-      "p" => "9",
-      "s" => "5$",
-      "t" => "7+",
-   }
-
-   words.map! {|w|
-      w.split('').map {|c|
-         c.gsub!(Regexp.compile("[#{leet.keys.to_s}]")) {|m| 
-            "[#{Regexp.escape(leet[m]) + m}]" }
-         c + '+[^A-Za-z]*'
-      }.join
-   }
-
-   return Regexp.new("(#{words.join('|')})", Regexp::EXTENDED|Regexp::IGNORECASE)
-end
-
 # parses all mesages for the regex built in mature.
-on :channel, mature(words) do
+on :channel, Utils.mature_regex(Utils.mature_words) do
    exempt = settings['exempt'].include? nick
    action = "kicked"
    message = "Hi #{nick}. You've been #{action} because the following matched my mature language regex: #{match}."
@@ -116,7 +79,7 @@ end
 
 # .mature
 on :channel, /^\.mature$/ do
-   msg nick, "Mature words I kick on: #{words.inspect}"
+   msg nick, "Mature words I kick on: #{Utils.mature_words.inspect}"
 end
 
 # .source
@@ -147,5 +110,32 @@ end
 
 # .help
 on :channel, /^\.help$/ do
-   msg channel, "I respond to the following: .lp, .mature, .source, .help"
+   msg channel, "I respond to the following: .lp, .mature, .source, .help, .define"
+end
+
+# .define
+on :channel, /^\.define +([\w#]+) +(.+)$/ do
+   define = match[0]
+   txt = match[1]
+   exists = (Utils.getDefine define)
+
+   Utils.storeDefine define, txt
+
+   if exists
+      message = "Replacing definition for '#{define}."
+   else
+      message = "'#{define} has been defined."
+   end
+   
+   msg channel, message
+end
+
+on :channel, /^\'([\w#]+)$/ do
+   txt = Utils.getDefine match[0]
+
+   if txt
+      msg channel, txt
+   else
+      log "#{match[0]} not defined"
+   end
 end

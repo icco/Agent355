@@ -23,7 +23,6 @@ Requires the following gems to run.
     * .csl (latest csl_status Twitter post, auto-post on new)
  * Logging of some sort...
    * not sure if we want this...
- * .define
  * Auto-Rejoin
 
 ## Contributing

@@ -25,6 +25,16 @@ Requires the following gems to run.
    * not sure if we want this...
  * Auto-Rejoin
 
+ * other possible features
+   * !8ball <to predict>
+   * !calc <term> 
+   * !ctcp <user>
+   * !man <command>
+   * help commands
+   * man commands
+   * man purpose
+   * man rating
+
 ## Contributing
 
 Fork and then send me a pull request. If it is a new feature make sure to add

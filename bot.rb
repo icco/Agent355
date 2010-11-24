@@ -110,7 +110,7 @@ end
 
 # .help
 on :channel, /^\.help$/ do
-   msg channel, "I respond to the following: .lp, .mature, .source, .help, .define"
+   msg channel, "I respond to the following: .lp, .mature, .source, .help, .define, .seen"
 end
 
 # .define
@@ -130,6 +130,7 @@ on :channel, /^\.define +([\w#]+) +(.+)$/ do
    msg channel, message
 end
 
+# for things that have been defined.
 on :channel, /^\'([\w#]+)$/ do
    txt = Utils.getDefine match[0]
 
@@ -138,4 +139,20 @@ on :channel, /^\'([\w#]+)$/ do
    else
       log "#{match[0]} not defined"
    end
+end
+
+# .seen
+on :channel, /^\.seen (\S+)$/ do
+   date = Utils.getSeen match[0]
+
+   if date > 0
+      msg channel, "#{match[0]} was last seen on #{Time.at(date)}."
+   else
+      msg channel, "I have never seen #{match[0]}."
+   end
+end
+
+# log users.
+on :channel do
+   Utils.markSeen nick
 end

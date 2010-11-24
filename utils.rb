@@ -6,6 +6,14 @@ class Utils
       return @@db
    end
 
+   def Utils.getSeen user
+      return (self.getKeyPair user, 'seens').to_i
+   end
+
+   def Utils.markSeen user
+      return self.storeKeyPair user, Time.now.to_i, 'seens'
+   end
+
    def Utils.getDefine key
       return self.getKeyPair key, 'defines'
    end

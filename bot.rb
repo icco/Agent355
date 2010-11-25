@@ -152,6 +152,14 @@ on :channel, /^\.seen (\S+)$/ do
    end
 end
 
+on :channel, /^\.cplug$/ do
+   msg channel, Utils.rss("http://cplug.org/feed/")
+end
+
+on :channel, /^\.csl$/ do
+   msg channel, Utils.twitter("csl_status")
+end
+
 # log users.
 on :channel do
    Utils.markSeen nick

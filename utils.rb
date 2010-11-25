@@ -99,4 +99,43 @@ class Utils
 
       return Regexp.new("(#{words.join('|')})", Regexp::EXTENDED|Regexp::IGNORECASE)
    end
+
+   def Utils.rss feed
+      require 'rss'
+
+      rss = RSS::Parser.parse(open(feed).read(), false).items[0]
+
+      ts = Utils.time_since rss.pubDate
+
+      return "\"#{rss.title}\" #{ts} -- #{rss.link}"
+   end
+
+   def Utils.twitter username
+      params = "?screen_name=#{username}&count=1&trim_user=true"
+      json = "http://api.twitter.com/1/statuses/user_timeline.json#{params}"
+      url = URI.parse(json)
+      resp = Net::HTTP.get_response(url)
+      data = resp.body
+      result = JSON.parse(data)
+
+      ts = Utils.time_since Time.parse(result[0]['created_at'])
+
+      return "\"#{result[0]['text']}\" #{ts} -- http://twitter.com/#{username}"
+   end
+
+   # pass in a time object 
+   def Utils.time_since time
+      distance = Time.now - time
+
+      out = case distance
+            when 0 .. 59 then "#{distance} seconds ago"
+            when 60 .. (60*60) then "#{distance/60} minutes ago"
+            when (60*60) .. (60*60*24) then "#{distance/(60*60)} hours ago"
+            when (60*60*24) .. (60*60*24*30) then "#{distance/((60*60)*24)} days ago"
+            else time.strftime("%m/%d/%Y")
+            end
+
+      return out.sub(/^1 (\w+)s ago$/, '1 \1 ago')
+   end
 end
+

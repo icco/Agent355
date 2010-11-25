@@ -47,9 +47,9 @@ configure do |c|
    c.server = settings['server']
    c.port = settings['port']
    c.realname = settings['realname']
-   c.verbose = false
+   c.verbose = true
    c.version = 'Agent 355 v0.42'
-   c.logger = settings['logger']
+   #c.logger = settings['logger']
 end
 
 # Now we define what we are going to do on connect.
@@ -60,12 +60,15 @@ on :connect do
    end
 
    join settings['channel']
+   log "Joining #{settings['channel']}."
 end
 
 # Auto-rejoin
 on :kick do
    sleep 1
+   log 'I was kicked!'
    join settings['channel']
+   log "Joining #{settings['channel']}."
 end
 
 # parses all mesages for the regex built in mature.

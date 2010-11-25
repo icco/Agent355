@@ -62,6 +62,12 @@ on :connect do
    join settings['channel']
 end
 
+# Auto-rejoin
+on :kick do
+   sleep 1
+   join settings['channel']
+end
+
 # parses all mesages for the regex built in mature.
 on :channel, Utils.mature_regex(Utils.mature_words) do
    exempt = settings['exempt'].include? nick

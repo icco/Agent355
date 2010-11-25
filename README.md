@@ -18,9 +18,9 @@ Requires the following gems to run.
 
  * .seen
  * timed bans
- * .rss (or maybe .news)
-    * .cplug (latest cplug.org post, auto-post on new)
-    * .csl (latest csl_status Twitter post, auto-post on new)
+ * Autopost on the following
+    * .cplug
+    * .csl
  * Logging of some sort...
    * not sure if we want this...
  * Auto-Rejoin

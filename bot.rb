@@ -110,7 +110,7 @@ end
 
 # .help
 on :channel, /^\.help$/ do
-   msg channel, "I respond to the following: .lp, .mature, .source, .help, .define, .seen"
+   msg channel, "I respond to the following: .lp, .mature, .source, .help, .define, .seen, .cplug, .csl"
 end
 
 # .define

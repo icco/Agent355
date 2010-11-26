@@ -60,10 +60,13 @@ class Utils
 
    def Utils.mature_words
       return [
+         'beaner',
          'chink',
          'chnk',
          'fag',
          'gook',
+         'naggar',
+         'nagger',
          'niga',
          'nigar',
          'nigga',

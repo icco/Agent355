@@ -49,7 +49,7 @@ configure do |c|
    c.realname = settings['realname']
    c.verbose = true
    c.version = 'Agent 355 v0.42'
-   #c.logger = settings['logger']
+   c.logger = settings['logger']
 end
 
 # Now we define what we are going to do on connect.

@@ -23,7 +23,7 @@ Requires the following gems to run.
     * .csl
  * Logging of some sort...
    * not sure if we want this...
- * Auto-Rejoin
+ * Auto-Reconnect
 
  * other possible features
    * !8ball <to predict>

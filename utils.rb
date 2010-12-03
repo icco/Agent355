@@ -140,5 +140,24 @@ class Utils
 
       return out.sub(/^1 (\w+)s ago$/, '1 \1 ago')
    end
+
+   def Utils.lastplayed username
+      api = "c8a55898b287950c836a1af12d91ce7d"
+      base_url = "http://ws.audioscrobbler.com/2.0/?method=user.getrecenttracks"
+      url = "#{base_url}&user=#{username}&api_key=#{api}&limit=1&format=json"
+
+      resp = Net::HTTP.get_response(URI.parse(url))
+      result = JSON.parse(resp.body)
+
+      if !result.nil? && !result['recenttracks'].nil? && !result['recenttracks']['track'].nil?
+         track = result['recenttracks']['track']
+         title =  track[0].nil? ? track['name'] : track[0]['name']
+         artist = track[0].nil? ? track['artist']['#text'] : track[0]['artist']['#text']
+
+         return "#{username} is listening to \"#{title}\" by #{artist}."
+      else
+         return "#{username} is not a valid last.fm user."
+      end
+   end
 end
 

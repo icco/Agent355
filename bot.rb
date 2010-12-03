@@ -88,7 +88,7 @@ end
 
 # .mature
 on :channel, /^\.mature$/ do
-   msg nick, "Mature words I kick on: #{Utils.mature_words.inspect}"
+   msg channel, "Mature words I kick on: #{Utils.mature_words.inspect}"
 end
 
 # .source
@@ -99,23 +99,14 @@ end
 # .lp
 on :channel, /^\.lp (\w+)$/ do
    lp_user = match[0]
-   api = "c8a55898b287950c836a1af12d91ce7d"
 
-   base_url = "http://ws.audioscrobbler.com/2.0/?method=user.getrecenttracks"
-   url = "#{base_url}&user=#{lp_user}&api_key=#{api}&limit=1&format=json"
-   resp = Net::HTTP.get_response(URI.parse(url))
-   result = JSON.parse(resp.body)
-
-   if !result.nil? && !result['recenttracks'].nil? && !result['recenttracks']['track'].nil?
-      track = result['recenttracks']['track']
-      title =  track[0].nil? ? track['name'] : track[0]['name']
-      artist = track[0].nil? ? track['artist']['#text'] : track[0]['artist']['#text']
-
-      msg channel, "#{lp_user} is listening to \"#{title}\" by #{artist}."
-   else
-      msg channel, "#{lp_user} is not a valid last.fm user."
-   end
+   msg channel, Utils.lastplayed(lp_user)
 end
+
+on :channel, /^\.lp$/ do
+   msg channel, Utils.lastplayed(nick)
+end
+
 
 # .help
 on :channel, /^\.help$/ do

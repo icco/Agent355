@@ -47,7 +47,7 @@ configure do |c|
    c.server = settings['server']
    c.port = settings['port']
    c.realname = settings['realname']
-   c.verbose = true
+   c.verbose = false
    c.version = 'Agent 355 v0.42'
    c.logger = settings['logger']
 end

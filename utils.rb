@@ -93,7 +93,7 @@ class Utils
       }
 
       words.map! {|w|
-         w.split('').map {|c|
+         '(^|\W)' + w.split('').map {|c|
             c.gsub!(Regexp.compile("[#{leet.keys.to_s}]")) {|m| 
                "[#{Regexp.escape(leet[m]) + m}]" }
                c + '+[^A-Za-z]*'

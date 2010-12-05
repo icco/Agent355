@@ -66,7 +66,7 @@ end
 # Auto-rejoin
 on :kick do
    sleep 1
-   log 'I was kicked!'
+   log "#{nick} was kicked!"
    join settings['channel']
    log "Joining #{settings['channel']}."
 end
@@ -106,7 +106,6 @@ end
 on :channel, /^\.lp$/ do
    msg channel, Utils.lastplayed(nick)
 end
-
 
 # .help
 on :channel, /^\.help$/ do

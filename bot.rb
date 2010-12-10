@@ -7,7 +7,7 @@ require 'yaml'
 require 'json'
 require 'net/http'
 
-require 'utils'
+require File.expand_path('utils', File.dirname(__FILE__))
 
 # This is a "fun" little IRC bot written in ruby using the [isaac][i] framework.
 #
@@ -16,7 +16,7 @@ require 'utils'
 # First we parse config.yml and set things up.
 settings = {}
 configure do |c|
-   # defaults
+   # defaults -- Change in config.yml, not here
    settings = {
       'realname' => 'Test',
       'nick' => "Agent355Test",
@@ -29,8 +29,9 @@ configure do |c|
       'logger' => nil
    }
 
-   if File.exists? './config.yml'
-      File.open(File.expand_path('./config.yml'), 'r') {|yf|
+   config_file = File.expand_path('./config.yml', File.dirname(__FILE__))
+   if File.exists? config_file
+      File.open(config_file) {|yf|
          new_settings = YAML::load( yf )
          if new_settings
             new_settings.each_pair {|key, val| settings[key] = val }
@@ -38,16 +39,16 @@ configure do |c|
       }
    end
 
-   Utils.buildDB settings['db']
+   Utils.buildDB File.expand_path(settings['db'], File.dirname(__FILE__))
 
-   settings['logger'] = Logger.new("#{settings['nick']}.log", 'daily')
+   #settings['logger'] = Logger.new("#{settings['nick']}.log", 'daily')
 
    # then match our config settings with isaac's
    c.nick = settings['nick'] 
    c.server = settings['server']
    c.port = settings['port']
    c.realname = settings['realname']
-   c.verbose = false
+   c.verbose = true
    c.version = 'Agent 355 v0.42'
    c.logger = settings['logger']
 end

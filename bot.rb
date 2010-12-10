@@ -41,7 +41,7 @@ configure do |c|
 
    Utils.buildDB File.expand_path(settings['db'], File.dirname(__FILE__))
 
-   #settings['logger'] = Logger.new("#{settings['nick']}.log", 'daily')
+   settings['logger'] = Logger.new("#{settings['nick']}.log", 'daily')
 
    # then match our config settings with isaac's
    c.nick = settings['nick'] 

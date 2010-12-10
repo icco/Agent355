@@ -26,7 +26,7 @@ configure do |c|
       'exempt' => [],
       'channel' => '#bottest',
       'db' => 'botDB.db',
-      'logger' => "#{settings['nick']}.log"
+      'logger' => 'bot.log',
    }
 
    config_file = File.expand_path('./config.yml', File.dirname(__FILE__))
@@ -50,6 +50,7 @@ configure do |c|
    c.version = 'Agent 355 v0.42'
 
    # Comment to print to STDOUT instead of logging.
+   settings['logger'] = "#{settings['nick']}.log"
    c.logger = Logger.new(File.expand_path(settings['logger'], File.dirname(__FILE__)), 'daily')
 end
 

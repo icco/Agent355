@@ -2,3 +2,4 @@
 config.yml
 *.log*
 *.db
+*.pid

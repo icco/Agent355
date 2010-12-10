@@ -26,7 +26,7 @@ configure do |c|
       'exempt' => [],
       'channel' => '#bottest',
       'db' => 'botDB.db',
-      'logger' => nil
+      'logger' => "#{settings['nick']}.log"
    }
 
    config_file = File.expand_path('./config.yml', File.dirname(__FILE__))
@@ -41,8 +41,6 @@ configure do |c|
 
    Utils.buildDB File.expand_path(settings['db'], File.dirname(__FILE__))
 
-   settings['logger'] = Logger.new("#{settings['nick']}.log", 'daily')
-
    # then match our config settings with isaac's
    c.nick = settings['nick'] 
    c.server = settings['server']
@@ -50,7 +48,9 @@ configure do |c|
    c.realname = settings['realname']
    c.verbose = true
    c.version = 'Agent 355 v0.42'
-   c.logger = settings['logger']
+
+   # Comment to print to STDOUT instead of logging.
+   c.logger = Logger.new(File.expand_path(settings['logger'], File.dirname(__FILE__)), 'daily')
 end
 
 # Now we define what we are going to do on connect.

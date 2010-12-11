@@ -1,4 +1,5 @@
 require 'sqlite3'
+require 'time'
 
 # this class stores all kinds of helper stuff.
 class Utils

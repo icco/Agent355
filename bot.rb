@@ -59,6 +59,7 @@ on :connect do
    # we will only be able to op if we auth with Nickserv
    if settings['ns_pw']
       msg 'NickServ', "IDENTIFY #{settings['nick']} #{settings['ns_pw']}"
+      msg 'ChanServ', "op #{settings['channel']}"
    end
 
    join settings['channel']

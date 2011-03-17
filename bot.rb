@@ -114,7 +114,7 @@ end
 
 # .help
 on :channel, /^\.help$/ do
-   msg channel, "I respond to the following: .lp, .mature, .source, .help, .define, .seen, .cplug, .csl"
+   msg channel, "I respond to the following: .lp, .mature, .source, .help, .define, .moo, .seen, .cplug, .csl"
 end
 
 # .define
@@ -154,6 +154,11 @@ on :channel, /^\.seen (\S+)$/ do
    else
       msg channel, "I have never seen #{match[0]}."
    end
+end
+
+on :channel, /^\.moo(( (\S+)$)|$)/ do
+   user = match[2].nil? ? nick : match[2]
+   msg channel, "#{nick} shoots milk out of their teats at #{user}."
 end
 
 on :channel, /^\.cplug$/ do

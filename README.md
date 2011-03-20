@@ -1,8 +1,8 @@
 # Agent 355
 
-A bot to control the insanity that is taking place in #cplug. 
+A bot to control the insanity that is taking place in #cplug.
 
-Requires the following gems to run. 
+Requires the following gems to run.
 
  * [isaac][i]
  * [json][j]
@@ -22,19 +22,23 @@ Requires the following gems to run.
  * Autopost on the following
     * .cplug
     * .csl
+
  * Logging of some sort...
    * not sure if we want this...
+
  * Auto-Reconnect
 
  * other possible features
    * !8ball <to predict>
-   * !calc <term> 
+   * !calc <term>
    * !ctcp <user>
    * !man <command>
    * help commands
    * man commands
    * man purpose
    * man rating
+
+ * Develop a system that loads in classes instead of defining everything here.
 
 ## Contributing
 

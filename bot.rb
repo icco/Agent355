@@ -183,6 +183,8 @@ on :channel, /^\.image (\S+)$/ do
    if !images.empty?
       image = images.sample
       msg channel, image["unescapedUrl"]
+   else
+      msg channel, "No images found for #{phrase}."
    end
 end
 

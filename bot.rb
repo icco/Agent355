@@ -5,6 +5,8 @@ require 'logger'
 require 'isaac'
 require 'yaml'
 require 'json'
+require 'uri'
+require 'open-uri'
 require 'net/http'
 
 require File.expand_path('utils', File.dirname(__FILE__))
@@ -43,7 +45,7 @@ configure do |c|
    Utils.buildDB File.expand_path(settings['db'], File.dirname(__FILE__))
 
    # then match our config settings with isaac's
-   c.nick = settings['nick'] 
+   c.nick = settings['nick']
    c.server = settings['server']
    c.port = settings['port']
    c.realname = settings['realname']
@@ -131,7 +133,7 @@ on :channel, /^\.define +([\w#]+) +(.+)$/ do
    else
       message = "'#{define} has been defined."
    end
-   
+
    msg channel, message
 end
 
@@ -168,6 +170,20 @@ end
 
 on :channel, /^\.csl$/ do
    msg channel, Utils.twitter("csl_status")
+end
+
+# Given .image word, return an image.
+on :channel, /^\.image (\S+)$/ do
+   phrase = URI.escape(match[0])
+   url = "http://ajax.googleapis.com/ajax/services/search/images?v=1.0&rsz=8&safe=active&q=#{phrase}"
+
+   data = open(url)
+   obj = JSON.parse(data.string)
+   images = obj["responseData"]["results"]
+   if !images.empty?
+      image = images.sample
+      msg channel, image["unescapedUrl"]
+   end
 end
 
 # log users.

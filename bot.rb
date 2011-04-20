@@ -209,10 +209,17 @@ on :channel, /^\.commit$/ do
    msg channel, out.string if !out.nil?
 end
 
-# fortune
+# .fortune
 on :channel, /^\.fortune$/ do
    url = "http://www.fortunefortoday.com/getfortuneonly.php"
-   msg channel, open(url)
+   out = open(url)
+
+   if !out.nil?
+      out.readlines.each do |str|
+         str = str.rstrip
+         msg channel, str if !str.empty?
+      end
+   end
 end
 
 # log users.

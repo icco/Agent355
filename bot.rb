@@ -117,7 +117,7 @@ end
 
 # .help
 on :channel, /^\.help$/ do
-   msg channel, "I respond to the following: .lp, .mature, .source, .help, .define, .moo, .seen, .cplug, .csl"
+   msg channel, "I respond to the following: .lp, .mature, .source, .help, .define, .moo, .seen, .cplug, .csl, .wiki, .image"
 end
 
 # .define

@@ -188,6 +188,7 @@ on :channel, /^\.image (.+)$/ do
    end
 end
 
+# search wikipedia with .wiki
 on :channel, /^\.wiki (.+)$/ do
   term = URI.escape(match[0])
   url = "http://en.wikipedia.org/w/api.php?action=opensearch&search=#{term}&format=json"
@@ -199,6 +200,18 @@ on :channel, /^\.wiki (.+)$/ do
   else
      msg channel, "Found nothing."
   end
+end
+
+# .commit -> random commit msg
+on :channel, /^\.commit$/ do
+   url = "http://whatthecommit.com/index.txt"
+   msg channel, open(url)
+end
+
+# fortune
+on :channel, /^\.fortune$/ do
+   url = "http://www.fortunefortoday.com/getfortuneonly.php"
+   msg channel, open(url)
 end
 
 # log users.

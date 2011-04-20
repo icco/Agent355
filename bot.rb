@@ -9,9 +9,10 @@ require 'net/http'
 
 require File.expand_path('utils', File.dirname(__FILE__))
 
-# This is a "fun" little IRC bot written in ruby using the [isaac][i] framework.
+# This is a "fun" little IRC bot written in ruby using the [isaac][i]
+# framework. Use icco's fork if you want good times.
 #
-# [i]: https://github.com/ichverstehe/isaac
+# [i]: https://github.com/icco/isaac
 
 # First we parse config.yml and set things up.
 settings = {}
@@ -50,7 +51,7 @@ configure do |c|
    c.version = 'Agent 355 v0.42'
 
    # Comment to print to STDOUT instead of logging.
-   settings['logger'] = "#{settings['nick']}.log"
+   settings['logger'] = "log/#{settings['nick']}.log"
    c.logger = Logger.new(File.expand_path(settings['logger'], File.dirname(__FILE__)), 'daily')
 end
 

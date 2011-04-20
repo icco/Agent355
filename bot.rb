@@ -173,7 +173,7 @@ on :channel, /^\.csl$/ do
 end
 
 # Given .image word, return an image.
-on :channel, /^\.image (\S+)$/ do
+on :channel, /^\.image (.+)$/ do
    phrase = URI.escape(match[0])
    url = "http://ajax.googleapis.com/ajax/services/search/images?v=1.0&rsz=8&safe=active&q=#{phrase}"
 

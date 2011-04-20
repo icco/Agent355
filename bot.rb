@@ -205,7 +205,8 @@ end
 # .commit -> random commit msg
 on :channel, /^\.commit$/ do
    url = "http://whatthecommit.com/index.txt"
-   msg channel, open(url)
+   out = open(url)
+   msg channel, out.string if !out.nil?
 end
 
 # fortune

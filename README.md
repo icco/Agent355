@@ -42,8 +42,7 @@ Requires the following gems to run.
 
 ## Contributing
 
-Fork and then send me a pull request. If it is a new feature make sure to add
-it to .help and explain what the intended output is.
+Fork and then send me a pull request. If it is a new feature make sure to add it to .help and explain what the intended output is.
 
 ## License
 

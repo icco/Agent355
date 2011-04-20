@@ -188,6 +188,19 @@ on :channel, /^\.image (.+)$/ do
    end
 end
 
+on :channel, /^\.wiki (.+)$/ do
+  term = URI.escape(match[0])
+  url = "http://en.wikipedia.org/w/api.php?action=opensearch&search=#{term}&format=json"
+
+  data = open(url)
+  obj = JSON.parse(data.string)
+  if !obj[1].empty?
+     msg channel, "http://en.wikipedia.org/wiki/#{URI.escape(obj[1][0])}"
+  else
+     msg channel, "Found nothing."
+  end
+end
+
 # log users.
 on :channel do
    Utils.markSeen nick

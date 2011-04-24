@@ -1,8 +1,13 @@
+GIT
+  remote: git://github.com/icco/isaac.git
+  revision: 721b732ac58857ee8f9c4a58437a9ab2c1c086d4
+  specs:
+    isaac (0.2.7)
+
 GEM
   remote: http://rubygems.org/
   specs:
-    daemons (1.1.2)
-    isaac (0.2.7)
+    daemons (1.1.3)
     json (1.5.1)
     sqlite3 (1.3.3)
 
@@ -11,6 +16,6 @@ PLATFORMS
 
 DEPENDENCIES
   daemons
-  isaac
+  isaac!
   json
   sqlite3

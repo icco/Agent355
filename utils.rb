@@ -36,7 +36,7 @@ class Utils
    def Utils.getKeyPair key, table
       sql = <<-SQL
          SELECT value
-         FROM #{table} 
+         FROM #{table}
          WHERE key = ?;
       SQL
 
@@ -79,7 +79,7 @@ class Utils
 
    # this is the function that builds our mature language regex.
    def Utils.mature_regex words
-      leet = { 
+      leet = {
          "a" => "4@",
          "b" => "68",
          "c" => "(",
@@ -95,7 +95,7 @@ class Utils
 
       words.map! {|w|
          '(^|\W)' + w.split('').map {|c|
-            c.gsub!(Regexp.compile("[#{leet.keys.to_s}]")) {|m| 
+            c.gsub!(Regexp.compile("[#{leet.keys.to_s}]")) {|m|
                "[#{Regexp.escape(leet[m]) + m}]" }
                c + '+[^A-Za-z]*'
          }.join
@@ -127,17 +127,17 @@ class Utils
       return "\"#{result[0]['text']}\" #{ts} -- http://twitter.com/#{username}"
    end
 
-   # pass in a time object 
+   # pass in a time object
    def Utils.time_since time
       distance = Time.now - time
 
       out = case distance
-            when 0 .. 59 then "#{distance} seconds ago"
-            when 60 .. (60*60) then "#{distance/60} minutes ago"
-            when (60*60) .. (60*60*24) then "#{distance/(60*60)} hours ago"
-            when (60*60*24) .. (60*60*24*30) then "#{distance/((60*60)*24)} days ago"
-            else time.strftime("%m/%d/%Y")
-            end
+         when 0 .. 59 then "#{distance} seconds ago"
+         when 60 .. (60*60) then "#{distance/60} minutes ago"
+         when (60*60) .. (60*60*24) then "#{distance/(60*60)} hours ago"
+         when (60*60*24) .. (60*60*24*30) then "#{distance/((60*60)*24)} days ago"
+         else time.strftime("%m/%d/%Y")
+      end
 
       return out.sub(/^1 (\w+)s ago$/, '1 \1 ago')
    end

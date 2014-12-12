@@ -44,6 +44,13 @@ Requires the following gems to run.
 
 Fork and then send me a pull request. If it is a new feature make sure to add it to .help and explain what the intended output is.
 
+## TODO
+
+* .seen
+* timed bans
+* .cplug (latest cplug.org post, auto-post on new)
+* .csl (latest csl_status Twitter post, auto-post on new)
+
 ## License
 
 Copyright (c) 2010 Cal Poly Linux Users Group
